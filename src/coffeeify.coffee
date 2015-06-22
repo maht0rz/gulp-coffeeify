@@ -31,7 +31,7 @@ traceError = ->
     args.push RESET
   gutil.log.apply gutil, args
 
-# 
+#
 module.exports = (opts = {})->
 
   # create alias map
@@ -60,7 +60,7 @@ module.exports = (opts = {})->
     opts.transforms.push
       ext: '.coffee'
       transform: (data, file)->
-        { js, v3SourceMap } = coffee.compile data, bare: true, inline: true, sourceMap: true, generatedFile: file
+        { js, v3SourceMap } = coffee.compile data, bare: false, inline: true, sourceMap: true, generatedFile: file
         map = convert.fromJSON v3SourceMap
         map.setProperty 'sources', [file]
         js += "\n#{map.toComment()}\n" if opts.debug
@@ -172,11 +172,11 @@ module.exports = (opts = {})->
         srcFilePath = path.relative process.cwd(), srcFile
         destFilePath = path.relative process.cwd(), destFile
 
-        # 
+        #
         gutil.log gutil.colors.green "coffeeify: #{srcFilePath} > #{destFilePath}"
 
         file.path = destFile
         self.push file
-      
+
       # callback
       cb()
